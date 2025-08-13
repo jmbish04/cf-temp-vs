@@ -1,5 +1,5 @@
 {
-  "name": "worker",
+  "name": "cf-temp-vs",
   "version": "0.1.0",
   "type": "module",
   "scripts": {
