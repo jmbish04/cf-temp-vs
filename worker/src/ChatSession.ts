@@ -1,5 +1,5 @@
 export interface Env {
-  AI: any;
+  AI: import('@cloudflare/workers-types').Ai;
   OPENAI_API_KEY: string;
   GEMINI_API_KEY: string;
 }
