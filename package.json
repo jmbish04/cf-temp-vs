@@ -2,7 +2,10 @@
   "name": "cf-temp-vs",
   "private": true,
   "version": "0.1.0",
-  "workspaces": ["frontend", "worker"],
+  "workspaces": [
+    "frontend",
+    "worker"
+  ],
   "scripts": {
     "dev": "concurrently \"pnpm --filter frontend dev\" \"pnpm --filter worker dev\"",
     "build": "pnpm --filter frontend build && pnpm --filter worker build",
@@ -14,5 +17,9 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
+  },
+  "packageManager": "pnpm@10.6.3",
+  "engines": {
+    "node": ">=22"
   }
 }
