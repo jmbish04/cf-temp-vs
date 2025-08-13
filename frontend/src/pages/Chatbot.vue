@@ -18,7 +18,7 @@ import WeatherCard from '../components/WeatherCard.vue';
 
 const { messages, input, handleSubmit, isLoading } = useChat({ api: '/api/chat' });
 
-function resolveComponent(m: any) {
+function resolveComponent(m: import('ai/vue').Message & { component?: string }) {
   if (m.component === 'weather-card') return WeatherCard;
   return 'p';
 }
