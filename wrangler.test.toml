@@ -1,0 +1,10 @@
+name = "cf-template"
+main = "worker/src/index.ts"
+compatibility_date = "2024-05-29"
+
+[[durable_objects.bindings]]
+name = "CHAT_SESSION"
+class_name = "ChatSession"
+
+[ai]
+binding = "AI"

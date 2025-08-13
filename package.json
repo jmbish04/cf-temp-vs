@@ -1,0 +1,14 @@
+{
+  "name": "cf-template",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": ["frontend", "worker"],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w frontend\" \"npm run dev -w worker\"",
+    "build": "npm run build -w frontend && npm run build -w worker",
+    "test": "npm test -w worker"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
