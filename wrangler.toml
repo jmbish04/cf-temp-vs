@@ -20,7 +20,7 @@ bindings = [
 binding = "DB"
 database_name = "cf_template_db"         # replace after create
 database_id = "REPLACE_ME_DB_ID"         # replace after create
-migrations_dir = "./migrations"
+migrations_dir = "./worker/migrations"
 
 # KV
 [[kv_namespaces]]
