@@ -13,5 +13,6 @@
     "deploy:tail": "pnpm run deploy && npx wrangler tail"
   },
   "devDependencies": {
-    "concurrently": "^8
-
+    "concurrently": "^8.2.2"
+  }
+}
