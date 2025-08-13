@@ -1,5 +1,5 @@
 # -------- Core --------
-name = "cf-template"
+name = "cf-template-vs"
 main = "worker/src/index.ts"
 compatibility_date = "2025-08-12"        # keep current; don't drift behind
 
