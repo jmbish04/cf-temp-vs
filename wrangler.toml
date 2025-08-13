@@ -1,13 +1,55 @@
+# Main project configuration
 name = "cf-template"
 main = "worker/src/index.ts"
 compatibility_date = "2024-05-29"
 
-[site]
-bucket = "frontend/dist"
-
+# Durable Object binding for the chat session
 [[durable_objects.bindings]]
 name = "CHAT_SESSION"
 class_name = "ChatSession"
 
+# AI binding for Workers AI
 [ai]
 binding = "AI"
+
+# Environment variables (non-secret)
+[vars]
+default_cloudflare_model = "@cf/openai/gpt-oss-120b" #@cf/meta/llama-4-scout-17b-16e-instruct
+default_cloudflare_embeddings = "@cf/baai/bge-large-en-v1.5" #@cf/baai/bge-base-en-v1.5
+default_gemini_model = "gemini-2.5-flash"
+default_openai_model = "gpt4o"
+
+
+# --- Data Persistence ---
+
+# D1 Database binding for structured data
+# Run `npx wrangler d1 create <DB_NAME>` to create the database.
+# Then run `npx wrangler d1 migrations apply <DB_NAME>` to apply migrations.
+[[d1_databases]]
+binding = "DB"
+database_name = "<YOUR_D1_DATABASE_NAME>"
+database_id = "<YOUR_D1_DATABASE_ID>"
+migrations_dir = "./migrations"  
+
+# KV Namespace binding for key-value storage
+# Run `npx wrangler kv namespace create <KV_NAME>` to create the namespace.
+# Then add the `id` here.
+[[kv_namespaces]]
+binding = "KV_DATA"
+id = "<YOUR_KV_NAMESPACE_ID>"
+
+# --- Observability and Logging ---
+
+# Analytics Engine binding for storing custom data points
+# This is great for tracking chat session stats, agent usage, etc.
+[[analytics_engine_datasets]]
+binding = "ANALYTICS_DATA"
+dataset = "<your_analytics_dataset>"
+
+# R2 binding for storing logs or larger files
+# This can be used for a robust logging solution.
+# Run `npx wrangler r2 bucket create <BUCKET_NAME>` to create it.
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "<your-bucket-name>"
+
