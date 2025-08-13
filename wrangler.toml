@@ -1,55 +1,80 @@
-# Main project configuration
+# -------- Core --------
 name = "cf-template"
 main = "worker/src/index.ts"
-compatibility_date = "2024-05-29"
+compatibility_date = "2025-08-12"        # keep current; don't drift behind
 
-# Durable Object binding for the chat session
-[[durable_objects.bindings]]
-name = "CHAT_SESSION"
-class_name = "ChatSession"
+workers_dev = true
 
-# AI binding for Workers AI
+[observability.logs]
+enabled = true
+
+# -------- Bindings --------
+# Durable Object(s)
+[durable_objects]
+bindings = [
+  { name = "CHAT_SESSION", class_name = "ChatSession" }
+]
+
+# D1
+[[d1_databases]]
+binding = "DB"
+database_name = "cf_template_db"         # replace after create
+database_id = "REPLACE_ME_DB_ID"         # replace after create
+migrations_dir = "./migrations"
+
+# KV
+[[kv_namespaces]]
+binding = "KV_DATA"
+id = "REPLACE_ME_KV_ID"                  # replace after create
+
+# R2
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "cf-template-bucket"       # replace after create
+
+# Analytics Engine (optional but useful)
+[[analytics_engine_datasets]]
+binding = "ANALYTICS_DATA"
+dataset = "cf_template_analytics"        # pre-create in dashboard or API
+
+# Workers AI (only binding name is needed)
 [ai]
 binding = "AI"
 
-# Environment variables (non-secret)
+# Queues (optional example)
+# [[queues.producers]]
+# binding = "Q_EVENTS"
+# queue = "cf-template-events"
+# [[queues.consumers]]
+# queue = "cf-template-events"
+# max_batch_size = 50
+
+# -------- Vars (non-secret) --------
 [vars]
 default_cloudflare_model = "@cf/openai/gpt-oss-120b" #@cf/meta/llama-4-scout-17b-16e-instruct
 default_cloudflare_embeddings = "@cf/baai/bge-large-en-v1.5" #@cf/baai/bge-base-en-v1.5
 default_gemini_model = "gemini-2.5-flash"
-default_openai_model = "gpt4o"
+default_openai_model = "gpt-4o" 
+ALLOWED_ORIGINS = "http://localhost:5173,https://your-ui.hacolby.workers.dev"  # tighten later
 
+# -------- Durable Object Migrations --------
+# IMPORTANT: tags are append-only and immutable once deployed.
+[[migrations]]
+tag = "v1"
+new_classes = ["ChatSession"]
 
-# --- Data Persistence ---
+# Example: future rename if you ever change the class name
+# [[migrations]]
+# tag = "2025-08-13_rename_chatsession_to_sessionhub"
+# renamed_classes = [{ from = "ChatSession", to = "SessionHub" }]
 
-# D1 Database binding for structured data
-# Run `npx wrangler d1 create <DB_NAME>` to create the database.
-# Then run `npx wrangler d1 migrations apply <DB_NAME>` to apply migrations.
-[[d1_databases]]
-binding = "DB"
-database_name = "<YOUR_D1_DATABASE_NAME>"
-database_id = "<YOUR_D1_DATABASE_ID>"
-migrations_dir = "./migrations"  
+# Example: delete an old class (DANGER: wipes instances)
+# [[migrations]]
+# tag = "2025-08-13_delete_obsolete"
+# deleted_classes = ["ObsoleteDO"]
 
-# KV Namespace binding for key-value storage
-# Run `npx wrangler kv namespace create <KV_NAME>` to create the namespace.
-# Then add the `id` here.
-[[kv_namespaces]]
-binding = "KV_DATA"
-id = "<YOUR_KV_NAMESPACE_ID>"
-
-# --- Observability and Logging ---
-
-# Analytics Engine binding for storing custom data points
-# This is great for tracking chat session stats, agent usage, etc.
-[[analytics_engine_datasets]]
-binding = "ANALYTICS_DATA"
-dataset = "<your_analytics_dataset>"
-
-# R2 binding for storing logs or larger files
-# This can be used for a robust logging solution.
-# Run `npx wrangler r2 bucket create <BUCKET_NAME>` to create it.
-[[r2_buckets]]
-binding = "BUCKET"
-bucket_name = "<your-bucket-name>"
-
+# -------- Environments (optional) --------
+[env.dev]
+vars = { ENV_NAME = "dev" }
+[env.prod]
+vars = { ENV_NAME = "prod" }
