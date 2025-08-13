@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev",
-    "build": "wrangler deploy --dry-run",
-    "test": "vitest"
+    "dev": "npx wrangler dev",
+    "build": "npx wrangler deploy --dry-run",
+    "test": "vitest",
+    "migrate:local": "npx wrangler d1 migrations apply DB --local",
+    "migrate:remote": "npx wrangler d1 migrations apply DB --remote",
+    "deploy": "pnpm run migrate:remote && npx wrangler deploy",
+    "deploy:tail": "pnpm run deploy && npx wrangler tail"    
   },
   "dependencies": {
     "hono": "^3.12.0",
