@@ -8,7 +8,8 @@
     "test": "vitest",
     "migrate:local": "npx wrangler d1 migrations apply DB --local",
     "migrate:remote": "npx wrangler d1 migrations apply DB --remote",
-    "deploy": "pnpm run migrate:remote && npx wrangler deploy",
+    "deploy": "npx wrangler deploy",
+    "deploy:migrate": "pnpm run migrate:remote && npx wrangler deploy",
     "deploy:tail": "pnpm run deploy && npx wrangler tail"    
   },
   "dependencies": {
