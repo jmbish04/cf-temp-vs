@@ -6,5 +6,5 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ message: any }>();
+const props = defineProps<{ message: { data: { city: string; temp: number; description: string } } }>();
 </script>
