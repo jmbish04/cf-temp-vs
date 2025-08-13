@@ -2,10 +2,6 @@
   "name": "cf-temp-vs",
   "private": true,
   "version": "0.1.0",
-  "workspaces": [
-    "frontend",
-    "worker"
-  ],
   "scripts": {
     "dev": "concurrently \"pnpm --filter frontend dev\" \"pnpm --filter worker dev\"",
     "build": "pnpm --filter frontend build && pnpm --filter worker build",
