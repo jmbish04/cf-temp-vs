@@ -4,11 +4,14 @@
   "version": "0.1.0",
   "workspaces": ["frontend", "worker"],
   "scripts": {
-    "dev": "concurrently \"npm run dev -w frontend\" \"npm run dev -w worker\"",
-    "build": "npm run build -w frontend && npm run build -w worker",
-    "test": "npm test -w worker"
+    "dev": "concurrently \"pnpm --filter frontend dev\" \"pnpm --filter worker dev\"",
+    "build": "pnpm --filter frontend build && pnpm --filter worker build",
+    "test": "pnpm --filter worker test",
+    "migrate:local": "npx wrangler d1 migrations apply DB --local",
+    "migrate:remote": "npx wrangler d1 migrations apply DB --remote",
+    "deploy": "pnpm run migrate:remote && npx wrangler deploy",
+    "deploy:tail": "pnpm run deploy && npx wrangler tail"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
-  }
-}
+    "concurrently": "^8
+
